@@ -1,0 +1,16 @@
+# Cache
+.cache
+__pycache__
+*.pyc
+
+# Package
+*.egg-info/
+
+# Model files
+*.h5
+*.hdf5
+*.pkl
+
+# IDE files
+.codeintel
+*.sublime-*

@@ -1,5 +1,4 @@
-from keras.layers import Dense
-from keras.wrappers import Wrapper
+from keras.layers import Dense, Wrapper
 import keras.backend as K
 
 
@@ -28,10 +27,16 @@ class DropConnect(Wrapper):
         self.layer = layer
         if 0. < self.prob < 1.:
             self.uses_learning_phase = True
-        super(DropConnect, self).__init__(**kwargs)
+        super(DropConnect, self).__init__(layer, **kwargs)
+
+    def build(self, input_shape):
+        if not self.layer.built:
+            self.layer.build(input_shape)
+            self.layer.built = True
+        super(DropConnect, self).build()
 
     def call(self, x, mask=None):
         if 0. < self.prob < 1.:
-            self.W = K.in_train_phase(K.dropout(self.W, self.prob), self.W)
-            self.b = K.in_train_phase(K.dropout(self.b, self.prob), self.b)
+            self.layer.W = K.in_train_phase(K.dropout(self.layer.W, self.prob), self.layer.W)
+            self.layer.b = K.in_train_phase(K.dropout(self.layer.b, self.prob), self.layer.b)
         return self.layer.call(x, mask=mask)

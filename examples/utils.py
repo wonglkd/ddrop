@@ -1,4 +1,5 @@
-from keras import datasets
+import keras.datasets.cifar10
+import keras.datasets.mnist
 from keras.utils import np_utils
 from keras import backend as K
 
@@ -9,7 +10,7 @@ def mnist():
     img_rows, img_cols = 28, 28
 
     # the data, shuffled and split between train and test sets
-    (X_train, y_train), (X_test, y_test) = datasets.mnist.load_data()
+    (X_train, y_train), (X_test, y_test) = keras.datasets.mnist.load_data()
 
     if K.image_dim_ordering() == 'th':
         X_train = X_train.reshape(X_train.shape[0], 1, img_rows, img_cols)
@@ -40,7 +41,7 @@ def cifar10():
     img_rows, img_cols = 32, 32
 
     # The data, shuffled and split between train and test sets:
-    (X_train, y_train), (X_test, y_test) = datasets.cifar10.load_data()
+    (X_train, y_train), (X_test, y_test) = keras.datasets.cifar10.load_data()
     print('X_train shape:', X_train.shape)
     print(X_train.shape[0], 'train samples')
     print(X_test.shape[0], 'test samples')

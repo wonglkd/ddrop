@@ -27,11 +27,13 @@ kernel_size = (3, 3)
 
 (X_train, Y_train), (X_test, Y_test), nb_classes = mnist()
 
-inputs = Input(shape=X_train.shape[1:])
+X_train = X_train.reshape(X_train.shape[0], -1)
+X_test = X_test.reshape(X_test.shape[0], -1)
+inputs = Input(shape=(np.prod(X_train.shape[1:]),))
 x = Dense(128, activation='relu')(inputs)
 # x = Dense(64, activation='relu')(x)
-# x = DropConnectDense(64, activation='relu')(x)
-x = DropConnect(Dense(64, activation='relu'))(x)
+x = DropConnectDense(64, activation='relu', prob=0.5)(x)
+# x = DropConnect(Dense(64, activation='relu'), prob=0.5)(x)
 # x = Dropout(0.6)(x)
 predictions = Dense(nb_classes, activation='softmax')(x)
 

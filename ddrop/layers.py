@@ -25,15 +25,18 @@ class DropConnect(Wrapper):
     def __init__(self, layer, prob=1., **kwargs):
         self.prob = prob
         self.layer = layer
+        super(DropConnect, self).__init__(layer, **kwargs)
         if 0. < self.prob < 1.:
             self.uses_learning_phase = True
-        super(DropConnect, self).__init__(layer, **kwargs)
 
     def build(self, input_shape):
         if not self.layer.built:
             self.layer.build(input_shape)
             self.layer.built = True
         super(DropConnect, self).build()
+
+    def get_output_shape_for(self, input_shape):
+        return self.layer.get_output_shape_for(input_shape)
 
     def call(self, x, mask=None):
         if 0. < self.prob < 1.:

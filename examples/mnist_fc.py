@@ -8,7 +8,8 @@ Gets to 99.25% test accuracy after 12 epochs
 from __future__ import print_function
 import numpy as np
 np.random.seed(1337)  # for reproducibility
-
+import tensorflow as tf
+tf.set_random_seed(1337)
 from keras.models import Model
 from keras.layers import Input, Dense, Dropout
 
@@ -32,8 +33,7 @@ X_test = X_test.reshape(X_test.shape[0], -1)
 inputs = Input(shape=(np.prod(X_train.shape[1:]),))
 x = Dense(128, activation='relu')(inputs)
 # x = Dense(64, activation='relu')(x)
-x = DropConnectDense(64, activation='relu', prob=0.5)(x)
-# x = DropConnect(Dense(64, activation='relu'), prob=0.5)(x)
+x = DropConnect(Dense(64, activation='relu'), prob=0.5)(x)
 # x = Dropout(0.6)(x)
 predictions = Dense(nb_classes, activation='softmax')(x)
 
